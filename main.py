@@ -58,7 +58,7 @@ for file in chat_files:
 # Confirm deletion
 if st.session_state.confirm_delete:
     st.sidebar.warning(f"Delete '{get_truncated_name(st.session_state.confirm_delete)}'?")
-    col_confirm, col_cancel = st.sidebar.columns(2)
+    col_confirm, col_cancel = st.sidebar.columns([0.5,0.5])
     if col_confirm.button("✅ Yes"):
         delete_chat(st.session_state.confirm_delete)
         st.session_state.confirm_delete = None
