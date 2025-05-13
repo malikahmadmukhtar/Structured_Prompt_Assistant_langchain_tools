@@ -3,10 +3,20 @@ import streamlit as st
 from app.history.chat_history import delete_chat, get_truncated_name, save_chat, get_chat_files, load_chat, \
     add_message_to_history, get_last_n_messages
 from app.utils.agent import agent_executor
+from config.settings import meta_image, agent_image, user_image
 
 # --- STREAMLIT UI ---
-st.set_page_config(page_title="Groq Chat Agent", page_icon="🤖")
-st.title("🤖 Groq Agent with Tools + History")
+st.set_page_config(page_title="Meta Assistant", page_icon="📢", layout="wide")
+# st.title("🤖 Groq Agent with Tools + History")
+
+col1, col2 = st.columns([1,5])
+with col1:
+    st.image(image=meta_image, output_format="PNG", width=120)
+with col2:
+    st.title("AI Based Meta Campaign Assistant")
+
+# st.header("Structured Output prototype")
+st.header("Type below to get Started")
 
 # Session state
 if "chat_history" not in st.session_state:
@@ -18,6 +28,14 @@ if "confirm_delete" not in st.session_state:
 if "loaded_file" not in st.session_state:
     st.session_state.loaded_file = None
 
+
+# New Chat Button
+if st.sidebar.button("➕ Start New Chat"):
+    st.session_state.chat_history = []
+    st.session_state.chat_id = str(uuid.uuid4())
+    st.session_state.loaded_file = None
+    st.rerun()
+
 # Sidebar - Previous chats
 st.sidebar.subheader("💬 Previous Chats")
 
@@ -25,7 +43,7 @@ chat_files = get_chat_files()
 
 for file in chat_files:
     chat_title = get_truncated_name(file.rsplit("_", 1)[0].replace("_", " "))
-    col1, col2 = st.sidebar.columns([0.75, 0.25])
+    col1, col2 = st.sidebar.columns([1, 0.2])
 
     if col1.button(chat_title, key=f"load_{file}"):
         data = load_chat(file)
@@ -50,12 +68,6 @@ if st.session_state.confirm_delete:
     if col_cancel.button("❌ No"):
         st.session_state.confirm_delete = None
 
-# New Chat Button
-if st.sidebar.button("➕ Start New Chat"):
-    st.session_state.chat_history = []
-    st.session_state.chat_id = str(uuid.uuid4())
-    st.session_state.loaded_file = None
-    st.rerun()
 
 # Chat input
 user_input = st.chat_input("Ask me something...")
@@ -81,6 +93,9 @@ if user_input:
     save_chat(filename_base.replace(" ", "_"), st.session_state.chat_id, st.session_state.chat_history)
 
 # Display messages
+# Display chat messages
 for role, msg in st.session_state.chat_history:
-    with st.chat_message(role):
+    avatar = agent_image if role == "agent" else user_image
+    with st.chat_message(role, avatar=avatar):
         st.markdown(msg)
+
