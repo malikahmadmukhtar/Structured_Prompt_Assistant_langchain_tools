@@ -6,6 +6,8 @@ import requests
 @tool
 def get_facebook_business_accounts() -> str:
     """Fetches Facebook Business Accounts connected to the authenticated user."""
+    print(f"Tool Called: get_facebook_business_accounts")
+
     url = f"{fb_base_url}me/businesses"
 
     try:
@@ -36,6 +38,8 @@ def get_facebook_business_accounts() -> str:
 @tool
 def get_facebook_ad_accounts() -> str:
     """Fetches Facebook Ad Accounts connected to the authenticated user."""
+    print(f"Tool Called: get_facebook_ad_accounts")
+
     url = f"{fb_base_url}me/adaccounts"
 
     try:

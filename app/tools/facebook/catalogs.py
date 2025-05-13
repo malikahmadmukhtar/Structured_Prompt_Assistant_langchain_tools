@@ -5,8 +5,9 @@ from config.settings import fb_base_url, fb_access_token
 
 @tool
 def get_facebook_catalogs(business_account_id: str) -> str:
-    """Fetches the product catalogs for a specific business account which can get by using the get_facebook_business_accounts tool."""
-
+    """Fetches the product catalogs for a specific business account which can get by using the get_facebook_business_accounts tool
+    and shows them to the user with their name and id."""
+    print(f"Tool Called: get_facebook_catalogs")
     url = f"{fb_base_url}{business_account_id}/owned_product_catalogs"
 
     try:

@@ -1,3 +1,4 @@
+import re
 import uuid
 import streamlit as st
 from app.history.chat_history import delete_chat, get_truncated_name, save_chat, get_chat_files, load_chat, \
@@ -85,7 +86,11 @@ if user_input:
     # Agent response
     response = agent_executor.invoke({"input": context})
     reply = response.get("output", "")
-    add_message_to_history("agent", reply, st.session_state.chat_history)
+
+    ## Removing reasoning tags
+    cleaned_reply = re.sub(r"<think>.*?</think>", "", reply, flags=re.DOTALL).strip()
+
+    add_message_to_history("agent", cleaned_reply, st.session_state.chat_history)
 
     # Save chat
     first_message = st.session_state.chat_history[0][1] if st.session_state.chat_history else "chat"
