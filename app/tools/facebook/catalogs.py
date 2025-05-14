@@ -34,5 +34,18 @@ def get_facebook_catalogs(business_account_id: str) -> str:
         return f"Unexpected error: {str(e)}"
 
 
+@tool
+def create_facebook_catalog(business_id: str, catalog_name: str) -> str:
+    """Create a new product catalog under a Facebook business account."""
+    url = f'{fb_base_url}{business_id}/owned_product_catalogs'
+    data = {
+        'name': catalog_name,
+        'access_token': fb_access_token
+    }
 
-
+    try:
+        response = requests.post(url, data=data)
+        response.raise_for_status()
+        return f"Catalog created with ID: {response.json().get('id')}"
+    except requests.exceptions.RequestException as e:
+        return f"Error creating catalog: {str(e)}"

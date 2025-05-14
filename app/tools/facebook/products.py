@@ -47,3 +47,26 @@ def fetch_products_from_catalog(catalog_id: str) -> str:
 
     except Exception as e:
         return f"An error occurred: {str(e)}"
+
+
+@tool
+def delete_catalog_product(product_id: str) -> str:
+    """
+    Deletes a product from a Facebook catalog by its product ID.
+    First show the products with their ids and then ask user to choose which product to delete.
+    """
+    url = f'{fb_base_url}{product_id}'
+    params = {
+        'access_token': fb_access_token
+    }
+
+    try:
+        response = requests.delete(url, params=params)
+        response.raise_for_status()
+        success = response.json().get('success', False)
+        if success:
+            return f"Product {product_id} deleted successfully."
+        else:
+            return f"Product deletion request was received but not confirmed."
+    except requests.exceptions.RequestException as e:
+        return f"Error deleting product: {str(e)}"
