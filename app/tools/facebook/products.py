@@ -41,7 +41,9 @@ def fetch_products_from_catalog(catalog_id: str) -> str:
         if not products:
             return "No products found in this catalog."
 
-        return f"Fetched {len(products)} products from catalog {catalog_id} which are {products}."
+        print(f"\nproducts are {str(products)}")
+        return str(products)
+        # return f"Fetched {len(products)} products from catalog {catalog_id} which are {products}."
 
     except Exception as e:
         return f"An error occurred: {str(e)}"

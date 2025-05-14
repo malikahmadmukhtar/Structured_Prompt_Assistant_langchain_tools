@@ -32,3 +32,7 @@ def get_facebook_catalogs(business_account_id: str) -> str:
 
     except Exception as e:
         return f"Unexpected error: {str(e)}"
+
+
+
+

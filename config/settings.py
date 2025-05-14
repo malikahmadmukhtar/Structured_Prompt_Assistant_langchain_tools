@@ -8,7 +8,7 @@ load_dotenv()
 active_model = 'deepseek-r1-distill-llama-70b'
 
 ## model temperature
-temperature = 0.3
+temperature = 0.5
 
 ## chat history path
 CHAT_DIR = "chat_logs"

@@ -7,7 +7,7 @@ from app.utils.agent import agent_executor
 from config.settings import meta_image, agent_image, user_image
 
 # --- STREAMLIT UI ---
-st.set_page_config(page_title="Meta Assistant", page_icon="📢", layout="wide")
+st.set_page_config(page_title="Meta Assistant", page_icon=agent_image, layout="wide")
 # st.title("🤖 Groq Agent with Tools + History")
 
 col1, col2 = st.columns([1,5])
@@ -85,6 +85,7 @@ if user_input:
 
     # Agent response
     response = agent_executor.invoke({"input": context})
+    print(f"\n\nRaw LLM reponse: {response}")
     reply = response.get("output", "")
 
     ## Removing reasoning tags

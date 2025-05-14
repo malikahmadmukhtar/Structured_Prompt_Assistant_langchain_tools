@@ -3,6 +3,10 @@ from app.tools.tool_list import declared_tool_list
 from langchain_groq import ChatGroq
 from config.agent_prompt import agent_prompt
 from config.settings import active_model, temperature, agent_type, groq_api_key
+from langchain_google_genai import ChatGoogleGenerativeAI
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # --- AGENT SETUP ---
 llm = ChatGroq(
@@ -10,6 +14,13 @@ llm = ChatGroq(
     model=active_model,
     api_key=groq_api_key
 )
+
+# llm = ChatGoogleGenerativeAI(
+#         model="gemini-2.0-flash",
+#         temperature=0.7,
+#         google_api_key=os.getenv("GEMINI_API_KEY")
+# )
+
 
 
 # --- AGENT INITIALIZATION ---

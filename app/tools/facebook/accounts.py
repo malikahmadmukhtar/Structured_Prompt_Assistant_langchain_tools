@@ -5,7 +5,7 @@ import requests
 # --- TOOL DEFINITION ---
 @tool
 def get_facebook_business_accounts() -> str:
-    """Fetches Facebook Business Accounts connected to the authenticated user."""
+    """Fetches Facebook Business Accounts connected to the user, and you should show them as a list in the output."""
     print(f"Tool Called: get_facebook_business_accounts")
 
     url = f"{fb_base_url}me/businesses"
@@ -22,6 +22,7 @@ def get_facebook_business_accounts() -> str:
         # return "Here are your business accounts:\n" + "\n".join(
         #     [f"- {b.get('name', 'Unnamed')} (ID: {b['id']})" for b in businesses]
         # )
+        print(businesses)
         return businesses
 
     except requests.exceptions.HTTPError as http_err:
@@ -37,7 +38,7 @@ def get_facebook_business_accounts() -> str:
 
 @tool
 def get_facebook_ad_accounts() -> str:
-    """Fetches Facebook Ad Accounts connected to the authenticated user."""
+    """Fetches Facebook Ad Accounts connected to the user and, and you should show them as a list in the output."""
     print(f"Tool Called: get_facebook_ad_accounts")
 
     url = f"{fb_base_url}me/adaccounts"
@@ -51,10 +52,12 @@ def get_facebook_ad_accounts() -> str:
         if not ad_accounts:
             return "No ad accounts found for this user."
 
-        # return "Here are your ad accounts:\n" + "\n".join(
-        #     [f"- {acc.get('name', 'Unnamed')} (ID: {acc['id']})" for acc in ad_accounts]
-        # )
-        return ad_accounts
+        print(ad_accounts)
+
+        return "".join(
+            [f"- {acc.get('name', 'Unnamed')} (ID: {acc['id']})" for acc in ad_accounts]
+        )
+        # return ad_accounts
 
     except requests.exceptions.HTTPError as http_err:
         return f"Facebook API error: {http_err.response.json().get('error', {}).get('message', str(http_err))}"
