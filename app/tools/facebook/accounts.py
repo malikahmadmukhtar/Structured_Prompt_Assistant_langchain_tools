@@ -1,6 +1,7 @@
 from langchain_core.tools import tool
 from config.settings import fb_access_token, fb_base_url
 import requests
+import streamlit as st
 
 # --- TOOL DEFINITION ---
 @tool
@@ -8,6 +9,7 @@ def get_facebook_business_accounts() -> str:
     """Fetches Facebook Business Accounts connected to the user, and you should show them as a list in the output."""
     print(f"Tool Called: get_facebook_business_accounts")
 
+    st.sidebar.info("Used Business Accounts Tool")
     url = f"{fb_base_url}me/businesses"
 
     try:
@@ -40,6 +42,7 @@ def get_facebook_business_accounts() -> str:
 def get_facebook_ad_accounts() -> str:
     """Fetches Facebook Ad Accounts connected to the user and, and you should show them as a list in the output."""
     print(f"Tool Called: get_facebook_ad_accounts")
+    st.sidebar.info("Used AD Accounts Tool")
 
     url = f"{fb_base_url}me/adaccounts"
 

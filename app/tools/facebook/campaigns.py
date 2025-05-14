@@ -1,13 +1,15 @@
 import requests
 from langchain_core.tools import tool
 from config.settings import fb_access_token, fb_base_url
-
+import streamlit as st
 
 @tool
 def get_facebook_campaigns(ad_account_id: str) -> str:
     """Fetch campaigns from a Facebook Ad Account using the get_facebook_ad_accounts tool to get the ad account id and asking the user to select the account
     to get the campaigns from.
     """
+    st.sidebar.info("Used Get Campaign Tool")
+
     print(f"get campaigns tool called with ad_account_id: {ad_account_id}")
     url = f"{fb_base_url}{ad_account_id}/campaigns" ##issues with formatting
     params = {
@@ -46,6 +48,7 @@ def create_fb_campaign(ad_account_id: str, campaign_name: str, objective: str) -
     ]
     Carefully check the tools if they can provide any required info and then ask the user for any of the required info or confirmations.
     """
+    st.sidebar.info("Used Create Campaign Tool")
     print(f"create campaigns tool called with ad_account_id: {ad_account_id}, campaign_name: {campaign_name}, objective: {objective}")
     url = f'{fb_base_url}{ad_account_id}/campaigns'
     campaign_data = {

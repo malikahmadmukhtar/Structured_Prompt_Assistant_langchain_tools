@@ -2,7 +2,7 @@ import uuid
 import requests
 from langchain_core.tools import tool
 from config.settings import fb_base_url, fb_access_token
-
+import streamlit as st
 
 @tool
 def fetch_products_from_catalog(catalog_id: str) -> str:
@@ -10,6 +10,8 @@ def fetch_products_from_catalog(catalog_id: str) -> str:
     Show the list of catalogs and let the user choose the catalog then fetch based on user choice.
     Products will be shown to user with their name, description, price and image URL.
     """
+    st.sidebar.info("Used Fetch Products Tool")
+
     print(f"Tool Called: fetch_products_from_catalog")
     base_url = f"{fb_base_url}{catalog_id}/products"
     print(f"Base URL: {base_url}")
@@ -57,6 +59,8 @@ def delete_catalog_product(product_id: str) -> str:
     Deletes a product from a Facebook catalog by its product ID.
     First show the products with their ids and then ask user to choose which product to delete.
     """
+    st.sidebar.info("Used Delete Product Tool")
+
     url = f'{fb_base_url}{product_id}'
     params = {
         'access_token': fb_access_token
@@ -73,6 +77,80 @@ def delete_catalog_product(product_id: str) -> str:
     except requests.exceptions.RequestException as e:
         return f"Error deleting product: {str(e)}"
 
+
+
+
+# @tool
+# def create_catalog_product(
+#     catalog_id: str,
+#     ad_account_id: str,
+#     name: str,
+#     description: str,
+#     price: float,
+#     url: str,
+#     availability: str
+# ) -> str:
+#     """
+#     Creates a product in the specified Facebook catalog.
+#     Prompts the user to upload an image using Streamlit UI and uploads it to Cloudinary.
+#
+#     Args:
+#         catalog_id: Facebook catalog ID.
+#         ad_account_id: Ad account ID (to fetch currency).
+#         name: Product name.
+#         description: Product description.
+#         price: Product price (float).
+#         url: Product page URL.
+#         availability: ["in stock", "out of stock", "available for order", "discontinued"].
+#
+#     Returns:
+#         The ID of the created product or an error message.
+#     """
+#     st.info("Please upload an image for the product below:")
+#
+#     image_file = st.file_uploader("Upload Product Image", type=["jpg", "jpeg", "png"])
+#     if not image_file:
+#         st.stop()  # Pause execution until image is uploaded
+#
+#     image_url = upload_image_to_cloudinary(image_file)
+#     if not image_url:
+#         return "Image upload failed. Cannot proceed."
+#
+#     # Convert price to minor units (e.g., cents)
+#     try:
+#         price_minor = int(float(str(price).replace(',', '').replace('PKR', '').strip()) * 100)
+#     except ValueError:
+#         return "Invalid price format. Please enter a numeric value."
+#
+#     # Get currency from ad account
+#     try:
+#         account_url = f'{fb_base_url}{ad_account_id}?fields=currency'
+#         account_response = requests.get(account_url, params={'access_token': fb_access_token})
+#         account_response.raise_for_status()
+#         currency = account_response.json().get('currency', 'USD')
+#     except requests.RequestException as e:
+#         return f"Failed to get ad account currency: {str(e)}"
+#
+#     product_data = {
+#         'name': name,
+#         'description': description,
+#         'price': price_minor,
+#         'currency': currency,
+#         'url': url,
+#         'image_url': image_url,
+#         'availability': availability,
+#         'retailer_id': str(uuid.uuid4()),
+#         'access_token': fb_access_token
+#     }
+#
+#     # Create product in Facebook catalog
+#     try:
+#         post_url = f'{fb_base_url}{catalog_id}/products'
+#         response = requests.post(post_url, data=product_data)
+#         response.raise_for_status()
+#         return response.json().get('id')
+#     except requests.RequestException as e:
+#         return f"Error creating product: {str(e)}"
 
 
 @tool
@@ -102,6 +180,8 @@ def create_catalog_product(
     Returns:
         The ID of the created product or an error message.
     """
+    st.sidebar.info("Used Create Product Tool")
+
     # Prepare and convert price to minor units (e.g., cents)
     try:
         price_minor = int(float(str(price).replace(',', '').replace('PKR', '').strip()) * 100)

@@ -1,5 +1,5 @@
 import json
-
+import streamlit as st
 import requests
 from langchain_core.tools import tool
 from config.settings import fb_access_token, fb_base_url
@@ -11,6 +11,7 @@ def fetch_ad_sets(ad_account_id: str, campaign_id: str) -> str:
     Fetch all ad sets for a given Facebook ad account using the get_facebook_ad_accounts tool and asking user for confirmation.
     Optionally filters by a specific campaign ID by asking the user first.
     """
+    st.sidebar.info("Used Fetch Ad-set Tool")
     print("Fetch ad sets called")
     base_url = f"{fb_base_url}{ad_account_id}/adsets"
     params = {
@@ -85,7 +86,9 @@ def create_ad_set(
     Returns:
     - ID of the created ad set or an error message if failed.
     """
-    print("crate ad set called")
+    st.sidebar.info("Used Create Ad-set Tool")
+
+    print("create ad set called")
     url = f'{fb_base_url}{ad_account_id}/adsets'
 
     # Normalize country codes (e.g., UK → GB)

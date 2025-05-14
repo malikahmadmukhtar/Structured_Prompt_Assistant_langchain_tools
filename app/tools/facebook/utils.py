@@ -2,6 +2,7 @@ import requests
 from config.settings import fb_access_token
 from langchain.tools import tool
 
+import streamlit as st
 @tool
 def search_interests(query: str) -> list:
     """
@@ -16,6 +17,8 @@ def search_interests(query: str) -> list:
     Returns:
     - A list of matching interest dicts with `id` and `name`
     """
+    st.sidebar.info("Used Search Interests Tool")
+
     print("Search interest called")
 
     url = f'https://graph.facebook.com/v18.0/search'
@@ -46,6 +49,7 @@ def get_behavior_ids() -> dict:
     Returns:
     - A dictionary where keys are behavior names and values are their corresponding Facebook behavior IDs.
     """
+    st.sidebar.info("Used Get Behaviour ID Tool")
     print("Get behaviour ids called")
 
     return {
