@@ -22,12 +22,13 @@ def get_facebook_campaigns(ad_account_id: str) -> str:
         if not data:
             return "No campaigns found for this ad account."
 
-        campaign_summaries = [
-            f"- {campaign['name']} (ID: {campaign['id']}, Status: {campaign['status']}, Objective: {campaign['objective']})"
-            for campaign in data
-        ]
+        # campaign_summaries = [
+        #     f"- {campaign['name']} (ID: {campaign['id']}, Status: {campaign['status']}, Objective: {campaign['objective']})"
+        #     for campaign in data
+        # ]
 
-        return "Here are the campaigns:\n" + "\n".join(campaign_summaries)
+        # return "Here are the campaigns:\n" + "\n".join(campaign_summaries)
+        return data
 
     except requests.exceptions.RequestException as e:
         return f"Error fetching campaigns: {str(e)}"
