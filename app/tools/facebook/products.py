@@ -1,3 +1,4 @@
+import uuid
 import requests
 from langchain_core.tools import tool
 from config.settings import fb_base_url, fb_access_token
@@ -49,6 +50,7 @@ def fetch_products_from_catalog(catalog_id: str) -> str:
         return f"An error occurred: {str(e)}"
 
 
+
 @tool
 def delete_catalog_product(product_id: str) -> str:
     """
@@ -70,3 +72,72 @@ def delete_catalog_product(product_id: str) -> str:
             return f"Product deletion request was received but not confirmed."
     except requests.exceptions.RequestException as e:
         return f"Error deleting product: {str(e)}"
+
+
+
+@tool
+def create_catalog_product(
+    catalog_id: str,
+    ad_account_id: str,
+    name: str,
+    description: str,
+    price: float,
+    url: str,
+    image_url: str,
+    availability: str
+) -> str:
+    """
+    Creates a product in the specified Facebook catalog.
+
+    Args:
+        catalog_id: The ID of the Facebook catalog(not the name).
+        ad_account_id: The ad account ID (not business account ID) to fetch currency info.
+        name: Name of the product.
+        description: Product description.
+        price: Product price (in local currency as float).
+        url: Product page URL.
+        image_url: Public URL of the product image.
+        availability: Product availability status ["in stock", "out of stock", "available for order", "discontinued"].
+
+    Returns:
+        The ID of the created product or an error message.
+    """
+    # Prepare and convert price to minor units (e.g., cents)
+    try:
+        price_minor = int(float(str(price).replace(',', '').replace('PKR', '').strip()) * 100)
+    except ValueError:
+        return "Invalid price format. Please enter a numeric value."
+
+    # Get currency from ad account
+    try:
+        account_url = f'{fb_base_url}{ad_account_id}?fields=currency'
+        account_response = requests.get(account_url, params={'access_token': fb_access_token})
+        account_response.raise_for_status()
+        currency = account_response.json().get('currency', 'USD')
+    except requests.RequestException as e:
+        return f"Failed to get ad account currency: {str(e)}"
+
+    if not image_url:
+        return "Product image URL is required."
+
+    # Prepare product payload
+    product_data = {
+        'name': name,
+        'description': description,
+        'price': price_minor,
+        'currency': currency,
+        'url': url,
+        'image_url': image_url,
+        'availability': availability,
+        'retailer_id': str(uuid.uuid4()),
+        'access_token': fb_access_token
+    }
+
+    # Create product
+    try:
+        url = f'{fb_base_url}{catalog_id}/products'
+        response = requests.post(url, data=product_data)
+        response.raise_for_status()
+        return response.json().get('id')
+    except requests.RequestException as e:
+        return f"Error creating product: {str(e)}"
