@@ -5,7 +5,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 ## LLM to use
-active_model = 'deepseek-r1-distill-llama-70b'
+# active_model = 'deepseek-r1-distill-llama-70b'
+active_model = 'meta-llama/llama-4-maverick-17b-128e-instruct'
 
 ## model temperature
 temperature = 0.5

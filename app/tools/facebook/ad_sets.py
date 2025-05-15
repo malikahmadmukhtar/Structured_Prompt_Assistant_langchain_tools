@@ -70,16 +70,16 @@ def create_ad_set(
 
     Parameters:
     - ad_account_id: ID of the ad account (get this from 'get_facebook_ad_accounts')
-    - name: Name of the ad set
-    - daily_budget: Budget in cents (min 1000)
+    - name: Name of the ad set (ask the user)
+    - daily_budget: Budget in cents (min 1000) (ask the user)
     - billing_event: "IMPRESSIONS" or "LINK_CLICKS"
     - optimization_goal: "LINK_CLICKS", "REACH", or "IMPRESSIONS"
     - bid_strategy: "LOWEST_COST_WITHOUT_CAP", "COST_CAP", or "BID_CAP"
     - status: "PAUSED" or "ACTIVE"
     - campaign_id: ID of the campaign (get this from 'fetch_campaigns')
     - countries: List of country codes (e.g., ["US", "GB"])
-    - age_min: Minimum age (13–65)
-    - age_max: Maximum age (13–65)
+    - age_min: Minimum age (13–65) (ask the user)
+    - age_max: Maximum age (13–65) (ask the user)
     - interests: List of interest dicts with `id` and `name` (use 'search_interests')
     - behaviors: List of behavior dicts with `id` and `name` (use 'search_behaviors')
 

@@ -61,3 +61,4 @@ def get_behavior_ids() -> dict:
         "Frequent Domestic Travelers": "6002714898572",
         "Frequent Travelers - All Types": "6002714895372"
     }
+
