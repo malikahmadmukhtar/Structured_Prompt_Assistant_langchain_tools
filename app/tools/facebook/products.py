@@ -123,24 +123,36 @@ def start_catalog_product_creation(
     missing = [field for field, value in required_fields.items() if not value]
     if missing:
         return f"Missing required product fields: {', '.join(missing)}. Please provide all required data."
+    else:
+        st.session_state.pending_product = {
+            "catalog_id": catalog_id,
+            "ad_account_id": ad_account_id,
+            "name": name,
+            "description": description,
+            "price": price,
+            "url": url,
+            "availability": availability.lower()
+        }
 
-    # Validate availability field
-    valid_availability = ["in stock", "out of stock", "available for order", "discontinued"]
-    if availability.lower() not in valid_availability:
-        return f"Invalid availability: '{availability}'. Must be one of: {', '.join(valid_availability)}."
+        return "Product details received. Please upload a product image to complete catalog product creation."
+
+    # # Validate availability field
+    # valid_availability = ["in stock", "out of stock", "available for order", "discontinued"]
+    # if availability.lower() not in valid_availability:
+    #     return f"Invalid availability: '{availability}'. Must be one of: {', '.join(valid_availability)}."
 
     # All good — store in session
-    st.session_state.pending_product = {
-        "catalog_id": catalog_id,
-        "ad_account_id": ad_account_id,
-        "name": name,
-        "description": description,
-        "price": price,
-        "url": url,
-        "availability": availability.lower()
-    }
-
-    return "Product details received. Please upload a product image to complete catalog product creation."
+    # st.session_state.pending_product = {
+    #     "catalog_id": catalog_id,
+    #     "ad_account_id": ad_account_id,
+    #     "name": name,
+    #     "description": description,
+    #     "price": price,
+    #     "url": url,
+    #     "availability": availability.lower()
+    # }
+    #
+    # return "Product details received. Please upload a product image to complete catalog product creation."
 
 
 

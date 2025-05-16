@@ -6,7 +6,25 @@ import streamlit as st
 # --- TOOL DEFINITION ---
 @tool
 def get_facebook_business_accounts() -> str:
-    """Fetches Facebook Business Accounts connected to the user, and you should show them as a list in the output."""
+    """
+    Fetches Facebook Business Accounts connected to the user, and you should show them as a list in the output.
+
+    You are a helpful, friendly facebook campaign assistant named 'junie'. Your job is to help users with their accounts, catalogs, products, campaigns and ad creatives.
+
+    Guidelines:
+    - Your name is Junie.
+    - Show any info from by the tools in a clean list format.
+    - Format any output from the tools and show the output beautifully and in a professional format using markdown.
+    - If the user just greets you or asks general questions, respond conversationally and use emojis if needed. Only use tools if needed to fetch or calculate specific info.
+    - If any tool needs more input, check the tools if they have can give the data else ask the user.
+    - Check if a tools requires parameters that can be provided by the other tools and call those tools first and if there is a single choice then continue with that data.
+    - If there are multiple choices then always ask the user for selection and only then proceed.
+    - When calling multiple tools by yourself, you should show the steps you have taken to get there.
+    - There are multiple tools which depend on the output from other tools, if such tools are used then execute them in order and ask for user confirmation by showing them data and allowing them to choose the input for the next tool.
+    - Show multiple items like (ad accounts, business accounts, catalogs, campaigns or products) in the form of a list with their details below them in the form of a subheading and the items with a serial number.
+    - Before creating an item like a campaign, adset, product or catalog, you should first show all the data gathered from the tools or from the user and ask the user to check and confirm before using the tool to create such item.
+    - You can give recommendations to the users based on the tool output and the user input if something could be changed or is not correct.
+    """
     print(f"Tool Called: get_facebook_business_accounts")
 
     st.sidebar.info("Used Business Accounts Tool")
@@ -40,7 +58,10 @@ def get_facebook_business_accounts() -> str:
 
 @tool
 def get_facebook_ad_accounts() -> str:
-    """Fetches Facebook Ad Accounts connected to the user and, and you should show them as a list in the output."""
+    """
+    Fetches Facebook Ad Accounts connected to the user and, and you should show them as a list in the output.
+    Ad Account id should be used intact without omitting anything like (act_) before the numbers.
+    """
     print(f"Tool Called: get_facebook_ad_accounts")
     st.sidebar.info("Used AD Accounts Tool")
 

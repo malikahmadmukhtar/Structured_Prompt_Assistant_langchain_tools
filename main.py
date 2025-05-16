@@ -44,7 +44,7 @@ for file in chat_files:
     chat_title = get_truncated_name(file.rsplit("_", 1)[0].replace("_", " "))
     col1, col2 = st.sidebar.columns([1, 0.2])
 
-    if col1.button(chat_title, key=f"load_{file}"):
+    if col1.button(chat_title, key=f"load_{file}",use_container_width=True):
         data = load_chat(file)
         st.session_state.chat_history = data["messages"]
         st.session_state.chat_id = file.rsplit("_", 1)[-1].replace(".json", "")
@@ -66,20 +66,6 @@ if st.session_state.confirm_delete:
         st.rerun()
     if col_cancel.button("❌ No"):
         st.session_state.confirm_delete = None
-
-## Handling product image upload
-# if "pending_product" in st.session_state:
-#     st.info("Finish product creation by uploading an image:")
-#     image_file = st.file_uploader("Upload Product Image", type=["jpg", "jpeg", "png"])
-#
-#     if image_file:
-#         image_url = upload_image_to_cloudinary(image_file)
-#         if image_url:
-#             product_id = finalize_product_upload(st.session_state["pending_product"], image_url)
-#             st.success(f"Product created successfully with ID: {product_id}")
-#             del st.session_state["pending_product"]
-#
-
 
 # Chat input
 user_input = st.chat_input("Ask me something...")
@@ -134,7 +120,9 @@ if "pending_product" in st.session_state:
                         if product_id.startswith("Error"):
                             st.error(f"❌ Product creation failed: {product_id}")
                         else:
-                            st.success(f"✅ Product created successfully with ID: `{product_id}`")
+                            # st.success(f"Product created successfully with ID: `{product_id}`")
+                            add_message_to_history("agent", f"Product created successfully with ID: `{product_id}`", st.session_state.chat_history)
+
                             del st.session_state["pending_product"]
                     except Exception as e:
                         st.error(f"❌ Unexpected error during product creation: {e}")
