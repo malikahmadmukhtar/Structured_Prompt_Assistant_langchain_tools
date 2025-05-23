@@ -4,6 +4,7 @@ import streamlit as st
 from app.history.chat_history import delete_chat, get_truncated_name, save_chat, get_chat_files, load_chat, \
     add_message_to_history, get_last_n_messages
 from app.utils.agent import agent_executor
+from app.utils.facebook.creative_creation import upload_image_to_facebook, finalize_creative_upload
 from app.utils.facebook.product_creation import upload_image_to_cloudinary, finalize_product_upload
 from config.settings import meta_image, agent_image, user_image, active_model
 
@@ -128,3 +129,26 @@ if "pending_product" in st.session_state:
                         st.error(f"❌ Unexpected error during product creation: {e}")
             except Exception as e:
                 st.error(f"❌ Image upload failed due to an unexpected error: {e}")
+elif "pending_creative" in st.session_state:
+    with st.chat_message("assistant"):
+        st.info("Upload an image to complete the ad creative:")
+        image_file = st.file_uploader("Upload Ad Image", type=["jpg", "jpeg", "png"], key="creative_image_upload")
+
+        if image_file:
+            try:
+                image_hash = upload_image_to_facebook(
+                    ad_account_id=st.session_state.pending_creative["ad_account_id"],
+                    image_file=image_file
+                )
+                if not image_hash:
+                    st.error("❌ Failed to upload image.")
+                else:
+                    creative_id = finalize_creative_upload(st.session_state["pending_creative"], image_hash)
+                    if isinstance(creative_id, str) and creative_id.startswith("Error"):
+                        st.error(creative_id)
+                    else:
+                        st.success(f"🎯 Creative created successfully with ID: `{creative_id}`")
+                        del st.session_state["pending_creative"]
+            except Exception as e:
+                st.error(f"❌ Unexpected error: {e}")
+
