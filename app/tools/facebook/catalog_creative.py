@@ -1,6 +1,6 @@
 from langchain_core.tools import tool
 import requests
-
+import streamlit as st
 from config.settings import fb_access_token, fb_base_url
 
 
@@ -25,6 +25,7 @@ def create_catalog_creative(
     Returns:
     - The ID of the created ad creative or an error message.
     """
+    st.sidebar.info("Used Create catalog creative Tool")
 
     # Validate input
     required_fields = {

@@ -1,7 +1,7 @@
 from langchain.tools import tool
 import requests
 from config.settings import fb_access_token, fb_base_url
-
+import streamlit as st
 
 @tool
 def fetch_facebook_page_ids():
@@ -11,6 +11,8 @@ def fetch_facebook_page_ids():
     Returns:
     - A list of (page_id, page_name) tuples, or an error message if the request fails.
     """
+    st.sidebar.info("Used Fetch Facebook Page id Tool")
+
     url = f"{fb_base_url}me/accounts"
     params = {
         "access_token": fb_access_token,

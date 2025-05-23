@@ -16,6 +16,8 @@ def fetch_existing_creatives(ad_account_id: str):
     Returns:
     - List of tuples (creative_id, creative_name) or error message.
     """
+    st.sidebar.info("Used Fetch Creatives Tool")
+
     url = f"{fb_base_url}{ad_account_id}/adcreatives"
     params = {
         'access_token': fb_access_token,
@@ -62,6 +64,7 @@ def start_creative_creation(
     Returns:
     - Message prompting image upload or error if any field is missing.
     """
+    st.sidebar.info("Used Start Creative creation tool")
     fields = {
         "ad_account_id": ad_account_id,
         "page_id": page_id,

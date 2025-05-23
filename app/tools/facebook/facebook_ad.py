@@ -1,5 +1,4 @@
-from langchain_core.tools import tool
-import requests
+import streamlit as st
 import json
 from config.settings import fb_base_url, fb_access_token
 from langchain.tools import tool
@@ -18,6 +17,8 @@ def get_facebook_ads(ad_account_id: str, ad_set_id: str = None, campaign_id: str
     Returns:
     - A formatted list of ads with ID, name, status, and creative_id.
     """
+    st.sidebar.info("Used Facebook ads Tool")
+
     try:
         base_url = f"{fb_base_url}{ad_account_id}/ads"
         params = {
@@ -78,6 +79,7 @@ def create_facebook_ad(
     Returns:
     - The created ad ID or an error message.
     """
+    st.sidebar.info("Used Create Facebook ad Tool")
 
     try:
         # Check for existing payment methods
