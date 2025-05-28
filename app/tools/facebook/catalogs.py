@@ -53,3 +53,31 @@ def create_facebook_catalog(business_id: str, catalog_name: str) -> str:
         return f"Catalog created with ID: {response.json().get('id')}"
     except requests.exceptions.RequestException as e:
         return f"Error creating catalog: {str(e)}"
+
+
+
+@tool
+def delete_facebook_catalog(catalog_id: str) -> str:
+    """
+    Deletes a Facebook product catalog.
+    Ask for confirmation before deleting it.
+
+    Parameters:
+    - catalog_id (str): The ID of the Facebook catalog to delete.
+
+    Returns:
+    - Success or error message as a string.
+    """
+    try:
+        url = f"{fb_base_url}{catalog_id}"
+        response = requests.delete(url, params={"access_token": fb_access_token})
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("success"):
+            return f"Catalog with ID `{catalog_id}` deleted successfully."
+        else:
+            return f"Failed to delete catalog `{catalog_id}`. Response: {result}"
+
+    except requests.RequestException as e:
+        return f"Error deleting catalog: {str(e)}"

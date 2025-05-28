@@ -11,7 +11,7 @@ def get_facebook_campaigns(ad_account_id: str) -> str:
     st.sidebar.info("Used Get Campaign Tool")
 
     print(f"get campaigns tool called with ad_account_id: {ad_account_id}")
-    url = f"{fb_base_url}{ad_account_id}/campaigns" ##issues with formatting
+    url = f"{fb_base_url}{ad_account_id}/campaigns"
     params = {
         'access_token': fb_access_token,
         'fields': 'id,name,status,objective',
@@ -65,3 +65,30 @@ def create_fb_campaign(ad_account_id: str, campaign_name: str, objective: str) -
         return f"Campaign created with ID: {response.json().get('id')}"
     except requests.exceptions.RequestException as e:
         return f"Error creating campaign: {str(e)}"
+
+
+@tool
+def delete_facebook_campaign(campaign_id: str) -> str:
+    """
+    Deletes a Facebook ad campaign.
+    Always ask for confirmation before deletion.
+
+    Parameters:
+    - campaign_id (str): The ID of the Facebook campaign to delete.
+
+    Returns:
+    - Success or error message as a string.
+    """
+    try:
+        url = f"{fb_base_url}{campaign_id}"
+        response = requests.delete(url, params={"access_token": fb_access_token})
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("success"):
+            return f"✅ Campaign with ID `{campaign_id}` deleted successfully."
+        else:
+            return f"❌ Failed to delete campaign `{campaign_id}`. Response: {result}"
+
+    except requests.RequestException as e:
+        return f"❌ Error deleting campaign: {str(e)}"

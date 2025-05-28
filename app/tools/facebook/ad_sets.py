@@ -163,6 +163,32 @@ def create_ad_set(
 
 
 
+@tool
+def delete_facebook_ad_set(ad_set_id: str, access_token: str) -> str:
+    """
+    Deletes a Facebook Ad Set.
+
+    Parameters:
+    - ad_set_id (str): The ID of the Ad Set to delete.
+
+    Returns:
+    - Success or error message as a string.
+    """
+    try:
+        url = f"{fb_base_url}{ad_set_id}"
+        response = requests.delete(url, params={"access_token": fb_access_token})
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("success"):
+            return f"Ad Set `{ad_set_id}` deleted successfully."
+        else:
+            return f"Failed to delete Ad Set `{ad_set_id}`. Response: {result}"
+    except requests.RequestException as e:
+        return f"Error deleting Ad Set: {str(e)}"
+
+
+
 # @tool
 # def create_ad_set(
 #     ad_account_id: str,

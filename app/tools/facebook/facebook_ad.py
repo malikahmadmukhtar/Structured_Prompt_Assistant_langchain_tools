@@ -106,7 +106,7 @@ def create_facebook_ad(
             setup_response = requests.post(setup_url, data=setup_data)
 
             if setup_response.status_code != 200:
-                return f"❌ Failed to create manual payment method: {setup_response.text}"
+                return f"Failed to create manual payment method: {setup_response.text}"
 
         # Construct ad creation payload
         creative_payload = (
@@ -129,7 +129,32 @@ def create_facebook_ad(
         ad_response.raise_for_status()
 
         ad_id = ad_response.json().get("id")
-        return f"✅ Ad created successfully with ID: `{ad_id}`"
+        return f"Ad created successfully with ID: `{ad_id}`"
 
     except requests.RequestException as e:
-        return f"❌ Failed to create ad: {str(e)}"
+        return f"Failed to create ad: {str(e)}"
+
+
+@tool
+def delete_facebook_ad(ad_id: str) -> str:
+    """
+    Deletes a Facebook Ad.
+
+    Parameters:
+    - ad_id (str): The ID of the Ad to delete.
+
+    Returns:
+    - Success or error message as a string.
+    """
+    try:
+        url = f"{fb_base_url}{ad_id}"
+        response = requests.delete(url, params={"access_token": fb_access_token})
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("success"):
+            return f"Ad `{ad_id}` deleted successfully."
+        else:
+            return f"Failed to delete Ad `{ad_id}`. Response: {result}"
+    except requests.RequestException as e:
+        return f"Error deleting Ad: {str(e)}"

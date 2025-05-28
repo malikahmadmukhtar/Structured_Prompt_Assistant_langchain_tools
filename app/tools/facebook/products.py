@@ -13,7 +13,6 @@ def fetch_products_from_catalog(catalog_id: str) -> str:
 
     print(f"Tool Called: fetch_products_from_catalog")
     base_url = f"{fb_base_url}{catalog_id}/products"
-    print(f"Base URL: {base_url}")
     products = []
     params = {
         'access_token': fb_access_token,
@@ -80,12 +79,12 @@ def delete_catalog_product(product_id: str) -> str:
 @tool
 def start_catalog_product_creation(
     catalog_id: str,
-    ad_account_id: str,
-    name: str,
-    description: str,
-    price: float,
-    url: str,
-    availability: str,
+    ad_account_id: str | None = None,
+    name: str | None = None,
+    description: str | None = None,
+    price: float | None = None,
+    url: str | None = None,
+    availability: str | None = None,
 ) -> str:
     """
     Creates a new product in the selected Facebook catalog and collects all required information via user prompts.

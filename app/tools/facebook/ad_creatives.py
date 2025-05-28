@@ -45,13 +45,14 @@ def fetch_existing_creatives(ad_account_id: str):
 def start_creative_creation(
     ad_account_id: str,
     page_id: str,
-    name: str,
-    message: str,
-    link: str,
-    cta_type: str,
+    name: str | None = None,
+    message: str | None = None,
+    link: str | None = None,
+    cta_type: str | None = None,
 ) -> str:
     """
     Initiates ad creative creation by saving required data to session and prompting for image upload.
+    Don't call this tool before collecting all the below parameters and remember this rule for every other tool.
 
     Parameters:
     - ad_account_id: Facebook Ad Account ID
@@ -77,6 +78,31 @@ def start_creative_creation(
     missing = [k for k, v in fields.items() if not v]
     if missing:
         return f"Missing required creative fields: {', '.join(missing)}."
+    else:
+        st.session_state.pending_creative = fields
+        return "Creative details saved. Please upload an image to complete the process."
 
-    st.session_state.pending_creative = fields
-    return "Creative details saved. Please upload an image to complete the process."
+
+@tool
+def delete_facebook_ad_creative(creative_id: str) -> str:
+    """
+    Deletes a Facebook Ad Creative.
+
+    Parameters:
+    - creative_id (str): The ID of the Ad Creative to delete.
+
+    Returns:
+    - Success or error message as a string.
+    """
+    try:
+        url = f"{fb_base_url}{creative_id}"
+        response = requests.delete(url, params={"access_token": fb_access_token})
+        response.raise_for_status()
+        result = response.json()
+
+        if result.get("success"):
+            return f"Ad Creative `{creative_id}` deleted successfully."
+        else:
+            return f"Failed to delete Ad Creative `{creative_id}`. Response: {result}"
+    except requests.RequestException as e:
+        return f"Error deleting Ad Creative: {str(e)}"
