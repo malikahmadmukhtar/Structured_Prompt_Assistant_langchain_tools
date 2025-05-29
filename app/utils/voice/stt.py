@@ -26,7 +26,7 @@ stt_data=("""
 </style>
 
 <div id="mic-button-container">
-  <button id="mic-btn" onclick="toggleRecognition()">🎤</button>
+  <button id="mic-btn" onclick="toggleRecognition()">🎙️</button>
 </div>
 
 <script>
@@ -77,3 +77,4 @@ stt_data=("""
   };
 </script>
 """)
+

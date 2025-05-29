@@ -600,6 +600,7 @@ def speak(text: str):
 
 
 
+st.sidebar.header("Meta Assistant")
 
 # New Chat Button
 if st.sidebar.button("➕ Start New Chat",use_container_width=True):
@@ -707,9 +708,7 @@ for i, (role, msg) in enumerate(st.session_state.chat_history):
 ## Injecting STT code
 html(stt_data)
 
-
-
-# Image upload inside assistant chat bubble
+# # Image upload inside assistant chat bubble
 if "pending_product" in st.session_state:
     with st.chat_message("assistant", avatar=agent_image):
         st.info("Finish product creation by uploading an image:")
@@ -726,9 +725,9 @@ if "pending_product" in st.session_state:
                         if product_id.startswith("Error"):
                             st.error(f"❌ Product creation failed: {product_id}")
                         else:
-                            add_message_to_history("agent", f"Product created successfully with ID: `{product_id}`",
-                                                   st.session_state.chat_history)
-                            speak(f"Product created successfully with ID: {product_id}")
+                            # st.success(f"Product created successfully with ID: `{product_id}`")
+                            add_message_to_history("agent", f"Product created successfully with ID: `{product_id}`", st.session_state.chat_history)
+
                             del st.session_state["pending_product"]
                     except Exception as e:
                         st.error(f"❌ Unexpected error during product creation: {e}")
@@ -753,9 +752,6 @@ elif "pending_creative" in st.session_state:
                         st.error(creative_id)
                     else:
                         st.success(f"🎯 Creative created successfully with ID: `{creative_id}`")
-                        add_message_to_history("agent", f"Creative created successfully with ID: `{creative_id}`",
-                                               st.session_state.chat_history)
-                        speak(f"Creative created successfully with ID: {creative_id}")
                         del st.session_state["pending_creative"]
             except Exception as e:
                 st.error(f"❌ Unexpected error: {e}")
