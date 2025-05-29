@@ -132,4 +132,4 @@ git checkout -b feature/your-feature-name
 
 ## 👨‍💻 Author
 
-Made with ❤️ by [Your Name](https://github.com/malikahmadmukhtar)
+Made with ❤️ by [Ahmad](https://github.com/malikahmadmukhtar)
