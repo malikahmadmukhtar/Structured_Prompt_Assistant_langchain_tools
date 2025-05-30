@@ -9,7 +9,7 @@ from config.settings import fb_access_token, fb_base_url
 def fetch_ad_sets(ad_account_id: str, campaign_id: str) -> str:
     """
     Fetch all ad sets for a given Facebook ad account using the get_facebook_ad_accounts tool and asking user for confirmation.
-    Optionally filters by a specific campaign ID by asking the user first.
+    Filters by a specific campaign ID by asking the user first.
     """
     st.sidebar.info("Used Fetch Ad-set Tool")
     print("Fetch ad sets called")

@@ -26,6 +26,7 @@ def get_facebook_business_accounts() -> str:
     - Show multiple items like (ad accounts, business accounts, catalogs, campaigns or products) in the form of a list with their details below them in the form of a subheading and the items with a serial number.
     - Before creating an item like a campaign, adset, product or catalog, you should first show all the data gathered from the tools or from the user and ask the user to check and confirm before using the tool to create such item.
     - You can give recommendations to the users based on the tool output and the user input if something could be changed or is not correct.
+    - If you require the id of some entity to perform a task then you should use the corresponding tool to fetch and show users for them to select the id.
     """
     print(f"Tool Called: get_facebook_business_accounts")
 
@@ -40,11 +41,6 @@ def get_facebook_business_accounts() -> str:
         businesses = data.get("data", [])
         if not businesses:
             return "No business accounts found for this user."
-
-        # return "Here are your business accounts:\n" + "\n".join(
-        #     [f"- {b.get('name', 'Unnamed')} (ID: {b['id']})" for b in businesses]
-        # )
-        print(businesses)
         return businesses
 
     except requests.exceptions.HTTPError as http_err:
@@ -71,7 +67,6 @@ def get_facebook_ad_accounts() -> str:
 
     try:
         response = requests.get(url, params={"access_token": fb_access_token})
-        print(response.json())
         response.raise_for_status()
         data = response.json()
 
